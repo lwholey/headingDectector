@@ -19,7 +19,8 @@ else
   K = P * H' * (H * P * H' + R)^-1;
   
   % Update estimate with measurement
-  x = x + K * (navIn.z - H * x);
+  residual = navIn.z - H * x;
+  x = x + K * (residual);
   
   % Compute error covariance for updated estimate
   P = (eye(3) - K * H) * P;

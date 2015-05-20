@@ -9,8 +9,8 @@ rStop = 5;
 cntStop = 1000;
 
 % navigation init
-navIn.state.x.r = 50;
-navIn.state.x.psi = 45 * deg;
+navIn.state.x.r = 100;
+navIn.state.x.psi = 90 * deg;
 navIn.state.x.v = 1;
 navIn.state.P = [10^2 0 0; 0 (90 * deg)^2 0; 0 0 (0.01)^2];
 navIn.prm.dt = 1;
@@ -23,7 +23,7 @@ navFirstCall = 1;
 % dynamics init
 dynIn.prm.stepLength = 1;
 dynIn.state.r = 50;
-dynIn.state.psi = 45 * deg;
+dynIn.state.psi = 0 * deg;
 
 % control init
 conIn.prm.psiErr = 0 * deg;
@@ -39,7 +39,7 @@ while (1)
   if ~navFirstCall
     navIn = navOut;
     % overwrite psi estimate with command from control
-    navIn.x.psi = navOut.state.x.psi + conOut.deltaPsi;
+    navIn.state.x.psi = navOut.state.x.psi + conOut.deltaPsi;
     navIn.z = senOut.state.r;
   end
   navOut = navigation(navIn, navFirstCall);
@@ -75,3 +75,8 @@ while (1)
     break;
   end
 end
+
+figure; plot(rErrH)
+ylabel('range error');
+figure; plot(psiErrH/deg);
+ylabel('psi error (deg)')
