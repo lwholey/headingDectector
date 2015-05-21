@@ -6,12 +6,11 @@ function [dynOut] = dynamics(dynIn)
 
   % law of cosines
   c = sqrt( a^2 + b^2 - 2 * a * b * cos(C) );
-  
-  % law of sines
-  B = lawOfSines(a, b, c, C);
-  
+
   dynOut.state.r = c;
-  dynOut.state.psi = pi - B;
-  dynOut.state.stepLength = dynIn.prm.stepLength;
-  dynOut.state.rho = dynIn.cmd.deltaPsi;
+  
+  v0 = [sin(C), cos(C)];
+  v1 = [-a*sin(C), b - a*cos(C)];
+  
+  dynOut.state.psi = angleBetweenVectors(v0, v1);
 
