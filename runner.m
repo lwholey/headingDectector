@@ -29,10 +29,15 @@ dynIn.state.psi = 0 * deg;
 conIn.prm.psiErr = 0 * deg;
 
 cnt = 0;
-rH = [];
-psiH = [];
-rErrH = [];
-psiErrH = [];
+hist.r = [];
+hist.psi = [];
+hist.rErr = [];
+hist.psiErr = [];
+hist.deltaPsi = [];
+hist.psiEst = [];
+hist.rSigma = [];
+hist.psiSigma = [];
+hist.vSigma = [];
 while (1)
 
   % navigation model
@@ -43,22 +48,27 @@ while (1)
     navIn.z = senOut.state.r;
   end
   navOut = navigation(navIn, navFirstCall);
+  hist.psiEst = [hist.psiEst; navOut.state.x.psi];
+  hist.rSigma = [hist.rSigma; sqrt(navOut.state.P(1,1))];
+  hist.psiSigma = [hist.psiSigma; sqrt(navOut.state.P(2,2))];
+  hist.vSigma = [hist.vSigma; sqrt(navOut.state.P(3,3))];
   navFirstCall = 0;
 
   % control model
   conIn.psi = navOut.state.x.psi;
   conOut = control(conIn);
+  hist.deltaPsi = [hist.deltaPsi; conOut.deltaPsi];
 
   % dynamics model
-  rErrH = [rErrH; navOut.state.x.r - dynIn.state.r];
-  psiErrH = [psiErrH; navOut.state.x.psi - dynIn.state.psi];
+  hist.rErr = [hist.rErr; navOut.state.x.r - dynIn.state.r];
+  hist.psiErr = [hist.psiErr; navOut.state.x.psi - dynIn.state.psi];
   
   dynIn.cmd.deltaPsi = conOut.deltaPsi;
   dynOut = dynamics(dynIn);
   dynIn.state.r = dynOut.state.r;
   dynIn.state.psi = dynOut.state.psi;
-  rH = [rH; dynIn.state.r];
-  psiH = [psiH; dynIn.state.psi];
+  hist.r = [hist.r; dynIn.state.r];
+  hist.psi = [hist.psi; dynIn.state.psi];
 
   % sensor model
   senIn.state.r = dynOut.state.r;
@@ -76,7 +86,20 @@ while (1)
   end
 end
 
-figure; plot(rErrH)
-ylabel('range error');
-figure; plot(psiErrH/deg);
-ylabel('psi error (deg)')
+%  figure; plot(hist.rErr);
+%  ylabel('range error');
+%  figure; plot(hist.psiErr/deg);
+%  ylabel('psi error (deg)')
+figure; plot(hist.psi/deg, 'b');
+ylabel('(deg)')
+hold on;
+plot(hist.psiEst/deg, 'g');
+legend('psi true', 'psi est');
+%  figure; plot(hist.deltaPsi/deg);
+%  ylabel('psi cmd (deg)')
+figure; plot(hist.rSigma)
+ylabel('rSigma')
+figure; plot(hist.psiSigma)
+ylabel('psiSigma')
+figure; plot(hist.vSigma)
+ylabel('vSigma')
