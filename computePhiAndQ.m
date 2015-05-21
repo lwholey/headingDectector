@@ -12,10 +12,10 @@ W = 1;
 
 G = [prm.rProcN; prm.psiProcN; prm.vProcN];
 
-A(1:3,1:3) = F;
+A(1:3,1:3) = -F * prm.dt;
 A(1:3,4:6) = G * W * G';
 A(4:6,1:3) = zeros(3);
-A(4:6,4:6) = F';
+A(4:6,4:6) = F' * prm.dt;
 
 B = expm(A);
 
