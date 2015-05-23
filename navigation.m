@@ -9,12 +9,12 @@ else
   x = [navIn.state.x.r; navIn.state.x.psi; navIn.state.x.v];
   P = navIn.state.P;
 
-  B = calcMatrixForPhiAndQ(navIn.state.x, navIn.prm);
+  B = calcMatrixForPhiAndQ(x, navIn.prm);
   phiT = B(4:6,4:6);
   phi = phiT';
   Q = phi * B(1:3,4:6);
   
-  x = statePropagate(x, phi);
+  x = statePropagate(x, phi, navIn.prm.dt);
   P = covPropagate(P, phi, Q);
   
   % Compute Kalman gain

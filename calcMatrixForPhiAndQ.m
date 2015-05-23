@@ -1,8 +1,8 @@
 function [B] = calcMatrixForPhiAndQ(x, prm)
 
-r = x.r;
-psi = x.psi;
-v = x.v;
+r = x(1);
+psi = x(2);
+v = x(3);
 
 F = [0, v * sin(psi) -cos(psi); ...
   -v * sin(psi) / (r^2), v / r * cos(psi), sin(psi) / r; ...
