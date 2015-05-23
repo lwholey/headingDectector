@@ -10,21 +10,21 @@ cntStop = 1000;
 
 % navigation init
 navIn.state.x.r = 100;
-navIn.state.x.psi = 90 * deg;
+navIn.state.x.psi = 20 * deg;
 navIn.state.x.v = 1;
-navIn.state.P = [10^2 0 0; 0 (90 * deg)^2 0; 0 0 (0.01)^2];
+navIn.state.P = [10^2 0 0; 0 (360 * deg)^2 0; 0 0 (0.01)^2];
 navIn.prm.dt = 1;
 navIn.prm.R = 1^2;
 navIn.prm.rProcN = 0.01;
-navIn.prm.psiProcN = 0.001;
+navIn.prm.psiProcN = 0.01;
 navIn.prm.vProcN = 1.0;
 navFirstCall = 1;
 
 % dynamics init
 dynIn.prm.dt = 1;
 dynIn.state.v = 1;
-dynIn.state.r = 50;
-dynIn.state.psi = 0 * deg;
+dynIn.state.r = 100;
+dynIn.state.psi = 45 * deg;
 
 % control init
 conIn.prm.psiErr = 0 * deg;
@@ -87,8 +87,8 @@ while (1)
   end
 end
 
-%  figure; plot(hist.rErr);
-%  ylabel('range error');
+% figure; plot(hist.rErr);
+% ylabel('range error');
 %  figure; plot(hist.psiErr/deg);
 %  ylabel('psi error (deg)')
 figure; plot(hist.psi/deg, 'b');
@@ -98,9 +98,9 @@ plot(hist.psiEst/deg, 'g');
 legend('psi true', 'psi est');
 %  figure; plot(hist.deltaPsi/deg);
 %  ylabel('psi cmd (deg)')
-figure; plot(hist.rSigma)
-ylabel('rSigma')
-figure; plot(hist.psiSigma)
-ylabel('psiSigma')
-figure; plot(hist.vSigma)
-ylabel('vSigma')
+% figure; plot(hist.rSigma)
+% ylabel('rSigma')
+figure; plot(hist.psiSigma/deg)
+ylabel('psiSigma (deg)')
+% figure; plot(hist.vSigma)
+% ylabel('vSigma')

@@ -1,3 +1,3 @@
 function [conOut] = control(conIn)
 
-  conOut.deltaPsi = -conIn.psi + conIn.prm.psiErr;
+  conOut.deltaPsi = 0; %-conIn.psi + conIn.prm.psiErr;
