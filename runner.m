@@ -21,7 +21,8 @@ navIn.prm.vProcN = 1.0;
 navFirstCall = 1;
 
 % dynamics init
-dynIn.prm.stepLength = 1;
+dynIn.prm.dt = 1;
+dynIn.state.v = 1;
 dynIn.state.r = 50;
 dynIn.state.psi = 0 * deg;
 

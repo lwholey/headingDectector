@@ -5,13 +5,17 @@ if navFirstCall
   navOut.state.x.psi = navIn.state.x.psi;
   navOut.state.x.v = navIn.state.x.v;
   navOut.state.P = navIn.state.P;
-else
-  % project ahead
+else  
   x = [navIn.state.x.r; navIn.state.x.psi; navIn.state.x.v];
   P = navIn.state.P;
-  [phi, Q] = computePhiAndQ(navIn.state.x, navIn.prm);
-  x = phi * x;
-  P = phi * P * phi' + Q;
+
+  B = calcMatrixForPhiAndQ(navIn.state.x, navIn.prm);
+  phiT = B(4:6,4:6);
+  phi = phiT';
+  Q = phi * B(1:3,4:6);
+  
+  x = statePropagate(x, phi);
+  P = covPropagate(P, phi, Q);
   
   % Compute Kalman gain
   R = navIn.prm.R;

@@ -1,4 +1,4 @@
-function [phi, Q] = computePhiAndQ(x, prm)
+function [B] = calcMatrixForPhiAndQ(x, prm)
 
 r = x.r;
 psi = x.psi;
@@ -18,8 +18,3 @@ A(4:6,1:3) = zeros(3);
 A(4:6,4:6) = F' * prm.dt;
 
 B = expm(A);
-
-phiT = B(4:6,4:6);
-phi = phiT';
-
-Q = phi * B(1:3,4:6);
